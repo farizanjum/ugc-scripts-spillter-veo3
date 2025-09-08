@@ -158,7 +158,7 @@ gcloud run deploy ugc-script-splitter \
 
 ## Future Features
 
-- [ ] Direct Veo 3 video generation (when API is available)
+- [ ] Direct Veo 3 video generation (when API is cheaper)
 - [ ] Image-to-video support
 - [ ] Video preview in browser
 - [ ] Batch processing for multiple scripts
