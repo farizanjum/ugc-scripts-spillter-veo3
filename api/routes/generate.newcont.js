@@ -89,7 +89,8 @@ router.post('/generate-new-cont', async (req, res) => {
     }
 
     // Use continuation style generation path
-    const result = await OpenAIService.generateSegmentsWithVoiceProfile(params);
+    const openaiService = new OpenAIService();
+    const result = await openaiService.generateSegmentsWithVoiceProfile(params);
 
     res.json({
       success: true,

@@ -491,4 +491,4 @@ Hard rule: No subtitles/on-screen text/captions/SFX/music in any field.`
   }
 }
 
-export default new OpenAIServicePlus(); 
+export default OpenAIServicePlus; 

@@ -94,9 +94,10 @@ router.post('/generate', async (req, res) => {
     };
     
     // Generate segments using OpenAI
-    const result = continuationMode 
-      ? await OpenAIService.generateSegmentsWithVoiceProfile(params)
-      : await OpenAIService.generateSegments(params);
+    const openaiService = new OpenAIService();
+    const result = continuationMode
+      ? await openaiService.generateSegmentsWithVoiceProfile(params)
+      : await openaiService.generateSegments(params);
     
     console.log('[Generate] Success:', {
       segments: result.segments.length,

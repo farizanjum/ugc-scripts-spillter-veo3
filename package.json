@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run build && npm run server",
+    "dev": "vercel dev",
+    "dev:local": "npm run build && npm run server",
     "dev:watch": "concurrently \"npm run server\" \"npm run watch:client\"",
     "server": "nodemon server.js",
     "watch:client": "nodemon --watch client/src --ext js,jsx,css --exec \"npm run build\"",
     "build": "cd client && npm run build && cd .. && rm -rf build && cp -r client/build .",
     "start": "node server.js",
     "install-all": "npm install && cd client && npm install",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "vercel-build": "echo 'Using pre-built files from build directory'"
   },
   "dependencies": {
     "@google-cloud/vertexai": "^1.9.0",

@@ -86,7 +86,8 @@ router.post('/generate-plus', async (req, res) => {
       accentRegion
     };
 
-    const result = await OpenAIServicePlus.generateSegments(params);
+    const openaiService = new OpenAIServicePlus();
+    const result = await openaiService.generateSegments(params);
 
     // Persist inputs/outputs to per-run folder
     try {

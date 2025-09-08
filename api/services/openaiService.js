@@ -617,4 +617,4 @@ CRITICAL REQUIREMENTS:
   }
 }
 
-export default new OpenAIService();
+export default OpenAIService;
