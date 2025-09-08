@@ -14,21 +14,122 @@ class OpenAIService {
     this.templateInstructions = null;
   }
 
-  async loadTemplate(format = 'standard') {
-    const filename = format === 'enhanced' 
-      ? 'veo3-enhanced-continuity.md' 
-      : 'veo3-json-guidelines.md';
-    
-    const templatePath = path.join(__dirname, '../../instructions/', filename);
-    console.log(`[OpenAI] Loading template: ${filename}`);
-    
-    return await fs.readFile(templatePath, 'utf8');
+  loadTemplate(format = 'standard') {
+    console.log(`[OpenAI] Loading template: ${format}`);
+
+    // Embedded templates to avoid file system dependencies
+    const templates = {
+      'standard': `# Veo 3 JSON Segment Guidelines
+
+## JSON Structure for Each 8-Second Segment
+
+Each segment must follow this exact JSON structure with detailed descriptions totaling 300+ words minimum.
+
+\`\`\`json
+{
+  "segment_info": {
+    "segment_number": 1,
+    "total_segments": 4,
+    "location": "living room",
+    "overlap_instructions": "Character position at end matches next segment start"
+  },
+
+  "character_description": {
+    "physical": "[100+ words - EXACT same base description across all segments]",
+    "clothing": "[100+ words - EXACT same outfit details across all segments]",
+    "current_state": "[50+ words - Specific to this moment: expression, energy, position]",
+    "voice_matching": "[50+ words - Inflection for these specific lines]"
+  },
+
+  "scene_continuity": {
+    "environment": "[150+ words - Specific room description for this location]",
+    "camera_position": "[Specific angle and framing for this segment]",
+    "camera_movement": "[Static, slow push, orbit, or dynamic based on style]",
+    "lighting_state": "[Lighting based on time of day and location]",
+    "props_in_frame": "[What's visible in this shot]",
+    "background_elements": "[Any background life or activity if enabled]"
+  },
+
+  "action_timeline": {
+    "dialogue": "[Exact words spoken in this 8-second segment]",
+    "synchronized_actions": "[Beat-by-beat actions matching dialogue timing]",
+    "product_interactions": "[Specific product handling in this segment]",
+    "location_transition": "[Movement between rooms if applicable]",
+    "transition_prep": "[How segment ends to match next segment start]"
+  }
+}
+\`\`\`
+
+## Field Requirements and Guidelines
+
+### 1. Segment Info
+- \`segment_number\`: Sequential number (1, 2, 3, etc.)
+- \`total_segments\`: Total count of segments for the complete ad
+- \`overlap_instructions\`: Specific instructions for seamless editing between segments
+
+### 2. Character Description (300+ words total)
+- \`physical\`: EXACT same base description across ALL segments
+- \`clothing\`: EXACT same outfit details across ALL segments
+- \`current_state\`: Changes per segment based on emotion/energy
+- \`voice_matching\`: Specific inflection for dialogue in this segment`,
+
+      'enhanced': `# Veo 3 Enhanced Continuity Guidelines
+
+## Advanced JSON Structure with Micro-Expressions
+
+Each segment requires 500+ words with enhanced continuity and micro-expression details.
+
+\`\`\`json
+{
+  "segment_info": {
+    "segment_number": 1,
+    "total_segments": 6,
+    "location": "kitchen",
+    "timing": "8.0 seconds exact",
+    "overlap_instructions": "Seamless transition with matching body position"
+  },
+
+  "character_description": {
+    "physical": "[150+ words - Base description consistent across segments]",
+    "clothing": "[120+ words - Detailed outfit maintained throughout]",
+    "micro_expressions": "[80+ words - Subtle facial changes for this moment]",
+    "body_language": "[60+ words - Specific posture and gestures]",
+    "current_state": "[50+ words - Emotional state for this segment]",
+    "voice_matching": "[60+ words - Precise vocal delivery]"
+  },
+
+  "scene_continuity": {
+    "environment": "[200+ words - Detailed room description]",
+    "camera_position": "[Specific angle with measurements]",
+    "camera_movement": "[Precise movement with timing]",
+    "lighting_state": "[Professional lighting setup]",
+    "props_in_frame": "[Every visible object listed]",
+    "background_elements": "[Dynamic background activity]"
+  },
+
+  "action_timeline": {
+    "dialogue": "[Exact script with timing markers]",
+    "synchronized_actions": "[Frame-by-frame action breakdown]",
+    "product_interactions": "[Detailed product handling]",
+    "transition_prep": "[Exact positioning for next segment]"
+  }
+}
+\`\`\`
+
+## Enhanced Continuity Requirements
+- 500+ words per segment minimum
+- Micro-expression details for natural movement
+- Seamless transitions between segments
+- Professional lighting and camera work`
+    };
+
+    return templates[format] || templates['standard'];
   }
 
   async generateSegments(params) {
     console.log('[OpenAI] Starting generation with format:', params.jsonFormat || 'standard');
     console.log('[OpenAI] Setting mode:', params.settingMode || 'single');
-    const template = await this.loadTemplate(params.jsonFormat);
+    const template = this.loadTemplate(params.jsonFormat);
     
     // Step 1: Analyze and split script
     const scriptSegments = await this.splitScript(params.script);

@@ -82,21 +82,120 @@ class OpenAIServicePlus {
     this.templateInstructions = null;
   }
 
-  async loadTemplate(format = 'standard') {
-    const filename = format === 'enhanced' 
-      ? 'veo3-enhanced-continuity-plus.md' 
-      : 'veo3-json-guidelines-plus.md';
-    
-    const templatePath = path.join(__dirname, '../../instructions/', filename);
-    console.log(`[OpenAI Plus] Loading template: ${filename}`);
-    
-    return await fs.readFile(templatePath, 'utf8');
+  loadTemplate(format = 'standard') {
+    console.log(`[OpenAI Plus] Loading template: ${format}`);
+
+    // Embedded templates to avoid file system dependencies
+    const templates = {
+      'standard': `# Veo 3 JSON Plus Guidelines
+
+## Enhanced JSON Structure for Professional Segments
+
+Each segment requires 400+ words with professional production quality.
+
+\`\`\`json
+{
+  "segment_info": {
+    "segment_number": 1,
+    "total_segments": 5,
+    "location": "modern kitchen",
+    "timing": "8.0 seconds exact",
+    "overlap_instructions": "Maintain character position for seamless cut"
+  },
+
+  "character_description": {
+    "physical": "[120+ words - Consistent base description]",
+    "clothing": "[110+ words - Professional outfit details]",
+    "current_state": "[60+ words - Professional expression and energy]",
+    "voice_matching": "[55+ words - Professional vocal delivery]",
+    "professional_presence": "[50+ words - Business-appropriate demeanor]"
+  },
+
+  "scene_continuity": {
+    "environment": "[180+ words - Professional setting details]",
+    "camera_position": "[Professional camera angle with justification]",
+    "camera_movement": "[Smooth, professional movement]",
+    "lighting_state": "[Professional lighting setup]",
+    "props_in_frame": "[Relevant professional items]",
+    "background_elements": "[Clean, professional background]"
+  },
+
+  "action_timeline": {
+    "dialogue": "[Exact professional script delivery]",
+    "synchronized_actions": "[Professional gesture timing]",
+    "product_interactions": "[Professional product demonstration]",
+    "transition_prep": "[Professional positioning for next segment]"
+  }
+}
+\`\`\`
+
+## Professional Quality Requirements
+- 400+ words per segment minimum
+- Professional presentation throughout
+- Clean, modern aesthetic
+- Smooth transitions
+- High production values`,
+
+      'enhanced': `# Veo 3 Enhanced Plus Continuity Guidelines
+
+## Premium JSON Structure with Advanced Professional Details
+
+Each segment requires 600+ words with premium production quality and advanced continuity.
+
+\`\`\`json
+{
+  "segment_info": {
+    "segment_number": 1,
+    "total_segments": 6,
+    "location": "premium office",
+    "timing": "8.0 seconds exact",
+    "overlap_instructions": "Professional transition with matching energy"
+  },
+
+  "character_description": {
+    "physical": "[160+ words - Premium consistent description]",
+    "clothing": "[140+ words - Premium professional attire]",
+    "micro_expressions": "[90+ words - Subtle professional expressions]",
+    "body_language": "[70+ words - Professional posture and gestures]",
+    "current_state": "[60+ words - Premium emotional state]",
+    "voice_matching": "[70+ words - Premium vocal delivery]",
+    "professional_presence": "[60+ words - Executive-level demeanor]"
+  },
+
+  "scene_continuity": {
+    "environment": "[220+ words - Premium setting details]",
+    "camera_position": "[Professional cinematography with measurements]",
+    "camera_movement": "[Premium camera movement with timing]",
+    "lighting_state": "[Professional lighting design]",
+    "props_in_frame": "[Premium relevant items]",
+    "background_elements": "[Premium clean background]"
+  },
+
+  "action_timeline": {
+    "dialogue": "[Exact premium script delivery]",
+    "synchronized_actions": "[Premium gesture and action timing]",
+    "product_interactions": "[Premium product demonstration]",
+    "transition_prep": "[Premium positioning for next segment]"
+  }
+}
+\`\`\`
+
+## Premium Quality Requirements
+- 600+ words per segment minimum
+- Premium production quality
+- Advanced micro-expressions
+- Professional cinematography
+- Executive-level presentation
+- Seamless premium transitions`
+    };
+
+    return templates[format] || templates['standard'];
   }
 
   async generateSegments(params) {
     console.log('[OpenAI Plus] Starting generation with format:', params.jsonFormat || 'standard');
     console.log('[OpenAI Plus] Setting mode:', params.settingMode || 'single');
-    const template = await this.loadTemplate(params.jsonFormat);
+    const template = this.loadTemplate(params.jsonFormat);
     
     const scriptSegments = await this.splitScript(params.script);
     console.log('[OpenAI Plus] Script split into', scriptSegments.length, 'segments');
