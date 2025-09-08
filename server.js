@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 
 // Middleware
 app.use(cors());
+app.set('trust proxy', 1); // Trust first proxy (needed for Vercel)
 app.use(express.json({ limit: '10mb' }));
 
 // API Routes (before static files)

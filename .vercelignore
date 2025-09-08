@@ -77,7 +77,7 @@ jspm_packages/
 # Test files
 test-*.js
 runs/
-instructions/
+# instructions/  # Keep instructions for OpenAI templates
 
 # Documentation
 *.md
