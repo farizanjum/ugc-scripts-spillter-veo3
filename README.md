@@ -4,13 +4,13 @@ Transform your UGC scripts into AI-ready video segments with integrated Veo 3 su
 
 ## Features
 
-- 📝 **Script Splitting**: Automatically splits long scripts into 8-second segments
-- 🎭 **Two JSON Formats**: 
+- **Script Splitting**: Automatically splits long scripts into 8-second segments
+- **Two JSON Formats**: 
   - Standard (300+ words) 
   - Enhanced Continuity (500+ words with micro-expressions)
-- 🎬 **Veo 3 Integration**: Generate video descriptions (full video generation coming soon)
-- 📦 **Bulk Export**: Download all segments as ZIP
-- 💰 **Cost Estimation**: See video generation costs upfront
+- **Veo 3 Integration**: Generate video descriptions (full video generation coming soon)
+- **Bulk Export**: Download all segments as ZIP
+- **Cost Estimation**: See video generation costs upfront
 
 ## Setup
 
